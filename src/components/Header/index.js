@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     flex: 1,
-    color: Colors.white,
+    color: Colors.lightBlack,
   },
   headerBotom: {
     flexDirection: 'row',

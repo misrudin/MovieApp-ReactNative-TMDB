@@ -65,7 +65,7 @@ class BackgroundCarousel extends Component {
           onMomentumScrollEnd={this.indexSelected}
           showsHorizontalScrollIndicator={false}>
           {data.results.map((image, i) => (
-            <Card>
+            <Card key={i}>
               <Card.Cover
                 source={{
                   uri: `https://image.tmdb.org/t/p/w500${image.backdrop_path}`,

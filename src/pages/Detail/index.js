@@ -1,10 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View, ScrollView, StatusBar} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  StatusBar,
+  TouchableOpacity,
+} from 'react-native';
 import {Card, Divider} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 import MovieVideo from './Video';
 import Cast from './Cast';
 import {Colors} from '../../config/Colors';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 function convertToHours(time) {
   let hour = Math.floor(time / 60);
@@ -20,7 +28,7 @@ function convertToHours(time) {
   }
 }
 
-const MovieDetails = () => {
+const MovieDetails = ({navigation}) => {
   const {detail} = useSelector((state) => state.movies);
   const [genres, setGenres] = useState('');
 
@@ -42,6 +50,11 @@ const MovieDetails = () => {
             }}
             style={{}}
           />
+          <TouchableOpacity
+            style={{position: 'absolute', top: 30, left: 20}}
+            onPress={() => navigation.goBack()}>
+            <Icon name="arrow-left" size={20} color={Colors.white} />
+          </TouchableOpacity>
         </Card>
       </View>
       <View style={styles.movieInfo}>

@@ -46,5 +46,6 @@ const styles = StyleSheet.create({
   des: {
     fontSize: 13,
     color: '#acacac',
+    maxWidth: 250,
   },
 });
