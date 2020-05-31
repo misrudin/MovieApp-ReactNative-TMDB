@@ -16,9 +16,10 @@ import {
   getVideo,
   getDetail,
   getCast,
+  searchTv,
 } from '../../public/redux/actions/tvshow';
 
-const TvList = ({data, onPress, nav}) => {
+const TvList = ({data, onPress, nav, keyword}) => {
   const [page, setPage] = useState(2);
   let [results, setResults] = useState(data.results);
   const [loading, setLoading] = useState(false);
@@ -32,15 +33,28 @@ const TvList = ({data, onPress, nav}) => {
   };
 
   const loadMore = async () => {
-    if (page < data.total_pages) {
-      setLoading(true);
-      await dispatch(getDataTv(page, tipe)).then((res) => {
-        setTimeout(() => {
-          setResults([...results, ...res.value.data.results]);
-          setPage(page + 1);
-          setLoading(false);
-        }, 500);
-      });
+    if (!keyword) {
+      if (page < data.total_pages) {
+        setLoading(true);
+        await dispatch(getDataTv(page, tipe)).then((res) => {
+          setTimeout(() => {
+            setResults([...results, ...res.value.data.results]);
+            setPage(page + 1);
+            setLoading(false);
+          }, 500);
+        });
+      }
+    } else {
+      if (page < data.total_pages) {
+        setLoading(true);
+        await dispatch(searchTv(keyword, page)).then((res) => {
+          setTimeout(() => {
+            setResults([...results, ...res.value.data.results]);
+            setPage(page + 1);
+            setLoading(false);
+          }, 500);
+        });
+      }
     }
   };
 
@@ -58,28 +72,30 @@ const TvList = ({data, onPress, nav}) => {
 
   return (
     <>
-      <View style={styles.wrapper}>
-        <TouchableOpacity
-          onPress={() => getMovie('popular')}
-          style={styles.button}>
-          <Text style={styles.text}>Popular</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => getMovie('airing_today')}
-          style={styles.button}>
-          <Text style={styles.text}>Airing Today</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => getMovie('on_the_air')}
-          style={styles.button}>
-          <Text style={styles.text}>On Tv</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => getMovie('top_rated')}
-          style={styles.button}>
-          <Text style={styles.text}>Top Rated</Text>
-        </TouchableOpacity>
-      </View>
+      {keyword ? null : (
+        <View style={styles.wrapper}>
+          <TouchableOpacity
+            onPress={() => getMovie('popular')}
+            style={styles.button}>
+            <Text style={styles.text}>Popular</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => getMovie('airing_today')}
+            style={styles.button}>
+            <Text style={styles.text}>Airing Today</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => getMovie('on_the_air')}
+            style={styles.button}>
+            <Text style={styles.text}>On Tv</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => getMovie('top_rated')}
+            style={styles.button}>
+            <Text style={styles.text}>Top Rated</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       <View style={styles.container}>
         {data ? (
           <FlatList

@@ -29,6 +29,14 @@ export const getCast = (id) => {
     payload: axios.get(URL + `movie/${id}/credits?api_key=${apiKey}`),
   };
 };
+export const searchMovie = (keyword, page) => {
+  return {
+    type: 'GET_MOVIES_POPULAR',
+    payload: axios.get(
+      URL + `search/movie?api_key=${apiKey}&query=${keyword}&page=${page}`,
+    ),
+  };
+};
 export const setTipe = (tipe) => {
   return {
     type: 'SET_TIPE',

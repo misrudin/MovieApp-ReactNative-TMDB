@@ -4,13 +4,14 @@ import {Colors} from '../../config/Colors';
 import Header from '../../components/Header';
 import MovieList from '../../components/MovieList';
 import {useDispatch, useSelector} from 'react-redux';
-import {getMoviesPopular} from '../../public/redux/actions/movies';
+import {getMoviesPopular, searchMovie} from '../../public/redux/actions/movies';
 
 const Movie = ({navigation}) => {
   const dispatch = useDispatch();
   const {popular} = useSelector((state) => state.movies);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [key, setKey] = useState('');
 
   useEffect(() => {
     const getDataMovies = async () => {
@@ -32,17 +33,32 @@ const Movie = ({navigation}) => {
     navigation.toggleDrawer();
   };
 
+  const search = async (keyword) => {
+    setKey(keyword);
+    if (keyword) {
+      setLoading(true);
+      await dispatch(searchMovie(keyword, 1)).then(() => setLoading(false));
+    } else {
+      getMovies('popular');
+    }
+  };
+
   return (
     <>
-      <Header onPress={bukaMenu} search={null} />
+      <Header onPress={bukaMenu} search={(keyword) => search(keyword)} />
       <View style={styles.container}>
         {loading ? null : error ? (
-          <Text>Error, Plaese try again</Text>
+          <Text style={styles.text}>Error, Plaese try again</Text>
+        ) : popular.total_results < 1 ? (
+          <Text style={styles.text}>
+            Nothing result found with keyword : {key}
+          </Text>
         ) : (
           <MovieList
             data={popular}
             onPress={(type) => getMovies(type)}
             nav={(lokasi) => navigation.navigate(lokasi)}
+            keyword={key}
           />
         )}
         {loading ? (
@@ -71,5 +87,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     zIndex: 10,
+  },
+  text: {
+    color: Colors.white,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });

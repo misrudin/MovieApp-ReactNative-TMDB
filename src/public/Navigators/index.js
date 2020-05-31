@@ -16,6 +16,7 @@ import People from '../../pages/People';
 import Splash from '../../pages/Splash';
 import TvDetail from '../../pages/TvDetail';
 import Detail from '../../pages/Detail';
+import PeopleDetail from '../../pages/PeopleDetail';
 
 const Navigators = () => {
   const dimensions = useWindowDimensions();
@@ -111,6 +112,11 @@ const AuthNav = () => {
           <Stack.Screen
             name="TvDetail"
             component={TvDetail}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="DetailPeople"
+            component={PeopleDetail}
             options={{headerShown: false}}
           />
         </>

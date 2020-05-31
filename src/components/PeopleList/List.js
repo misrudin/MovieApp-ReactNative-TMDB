@@ -1,34 +1,43 @@
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Card, Badge, Text} from 'react-native-paper';
+import {Card, Badge} from 'react-native-paper';
+import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 
-const List = ({data}) => {
+const List = ({data, onPress}) => {
   return (
     <View style={styles.cardView}>
-      <TouchableOpacity style={{height: '90%'}}>
+      <TouchableOpacity style={styles.height} onPress={() => onPress(data.id)}>
         <Card>
-          <Card.Cover
-            source={{
-              uri: `https://image.tmdb.org/t/p/w500${data.profile_path}`,
-            }}
-            style={{
-              borderRadius: 5,
-              height: '100%',
-            }}
-          />
+          {data.profile_path ? (
+            <Card.Cover
+              source={{
+                uri: `https://image.tmdb.org/t/p/w500${data.profile_path}`,
+              }}
+              style={styles.cardCover}
+            />
+          ) : (
+            <View
+              style={[
+                styles.cardCover,
+                {justifyContent: 'center', alignItems: 'center'},
+              ]}>
+              <Text style={{color: '#acacac', fontWeight: 'bold'}}>
+                No Image
+              </Text>
+            </View>
+          )}
         </Card>
-        <Badge
-          size={25}
-          style={{
-            fontWeight: 'bold',
-            backgroundColor: 'transparent',
-            width: '100%',
-          }}>
+        <Badge size={25} style={styles.badgeTop}>
           {data.name}
         </Badge>
-        <Text style={{color: '#acacac', fontSize: 12, textAlign: 'center'}}>
-          {data.known_for[0].title || data.known_for[0].name}
-        </Text>
+        {typeof data.known_for[0] === 'object' ? (
+          <Badge size={25} style={styles.badgeBotom}>
+            {data.known_for[0].name || data.known_for[0].title}
+          </Badge>
+        ) : (
+          <Badge size={25} style={styles.badgeBotom}>
+            -
+          </Badge>
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -44,4 +53,21 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     margin: 8,
   },
+  badgeBotom: {
+    fontWeight: 'normal',
+    backgroundColor: 'transparent',
+    width: '100%',
+    marginTop: -10,
+    color: '#acacac',
+  },
+  badgeTop: {
+    fontWeight: 'bold',
+    backgroundColor: 'transparent',
+    width: '100%',
+  },
+  cardCover: {
+    borderRadius: 5,
+    height: '100%',
+  },
+  height: {height: '90%'},
 });

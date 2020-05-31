@@ -52,8 +52,7 @@ export default Popular;
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: Colors.white,
-    marginTop: 10,
+    marginTop: 30,
   },
   title: {
     paddingLeft: 5,

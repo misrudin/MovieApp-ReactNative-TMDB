@@ -1,11 +1,5 @@
 import React, {Component} from 'react';
-import {
-  Image,
-  View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {Image, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Colors} from '../../config/Colors';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
@@ -18,7 +12,7 @@ export class Header extends Component {
             <Image source={require('../../assets/icon/logo-tmdb.png')} />
           </View>
           <TouchableOpacity onPress={() => this.props.onPress()}>
-            <Icon name="bars" size={25} color={Colors.orange} />
+            <Icon name="bars" size={25} color={Colors.white} />
           </TouchableOpacity>
         </View>
       </View>
@@ -28,14 +22,10 @@ export class Header extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'transparent',
+    backgroundColor: Colors.black,
     paddingHorizontal: 16,
-    paddingVertical: 10,
-    // shadowOffset: {width: 2, height: 2},
-    // shadowColor: '#000',
-    // shadowRadius: 2,
-    // shadowOpacity: 1,
-    // elevation: 2,
+    paddingBottom: 10,
+    paddingTop: 25,
   },
   title: {
     alignSelf: 'center',

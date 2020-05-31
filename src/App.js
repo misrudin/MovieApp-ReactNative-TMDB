@@ -10,10 +10,10 @@ const App = () => {
   return (
     <Provider store={store}>
       <StatusBar
-        barStyle="dark-content"
+        barStyle="light-content"
         hidden={false}
-        backgroundColor="#f4f4f4"
-        translucent={false}
+        backgroundColor="transparent"
+        translucent={true}
         networkActivityIndicatorVisible={true}
       />
       <NavigationContainer>

@@ -30,3 +30,12 @@ export const getCast = (id) => {
     payload: axios.get(URL + `tv/${id}/credits?api_key=${apiKey}`),
   };
 };
+
+export const searchTv = (keyword, page) => {
+  return {
+    type: 'GET_TV',
+    payload: axios.get(
+      URL + `search/tv?api_key=${apiKey}&query=${keyword}&page=${page}`,
+    ),
+  };
+};

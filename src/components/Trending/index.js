@@ -1,14 +1,11 @@
 import React, {createRef, Component} from 'react';
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, View, ScrollView, Dimensions} from 'react-native';
 import {Card} from 'react-native-paper';
+import {Colors} from '../../config/Colors';
+import {connect} from 'react-redux';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 class BackgroundCarousel extends Component {
   scroolRef = createRef();
@@ -42,6 +39,10 @@ class BackgroundCarousel extends Component {
     }, 3000);
   }
 
+  ShowDetail = (id) => {
+    console.warn(id);
+  };
+
   indexSelected = (event) => {
     // Dimension width
     const viewSize = event.nativeEvent.layoutMeasurement.width;
@@ -54,7 +55,7 @@ class BackgroundCarousel extends Component {
   };
 
   render() {
-    const {data, navigation} = this.props;
+    const {data} = this.props;
     return (
       <View style={styles.container}>
         <ScrollView
@@ -64,26 +65,19 @@ class BackgroundCarousel extends Component {
           onMomentumScrollEnd={this.indexSelected}
           showsHorizontalScrollIndicator={false}>
           {data.results.map((image, i) => (
-            <TouchableOpacity key={i} onPress={() => null}>
-              <Card>
-                <Card.Cover
-                  source={{
-                    uri: `https://image.tmdb.org/t/p/w500${image.backdrop_path}`,
-                  }}
-                  style={styles.backgroundImg}
-                />
-                <Card.Title
-                  title={image.name}
-                  titleStyle={{color: 'white'}}
-                  style={styles.title}
-                />
-                <Card.Title
-                  title={image.title}
-                  titleStyle={{color: 'white'}}
-                  style={styles.title}
-                />
-              </Card>
-            </TouchableOpacity>
+            <Card>
+              <Card.Cover
+                source={{
+                  uri: `https://image.tmdb.org/t/p/w500${image.backdrop_path}`,
+                }}
+                style={styles.backgroundImg}
+              />
+              <Card.Title
+                title={image.name || image.title}
+                titleStyle={{color: 'white'}}
+                style={styles.title}
+              />
+            </Card>
           ))}
         </ScrollView>
         <View style={styles.dotContainer}>
@@ -102,11 +96,17 @@ class BackgroundCarousel extends Component {
   }
 }
 
-export default BackgroundCarousel;
+const mapStateToProps = ({movies}) => {
+  return {
+    movies,
+  };
+};
+
+export default connect(mapStateToProps)(BackgroundCarousel);
 
 const styles = StyleSheet.create({
   backgroundImg: {
-    height: 200,
+    height: DEVICE_HEIGHT / 3,
     width: DEVICE_WIDTH,
   },
   title: {
@@ -114,8 +114,6 @@ const styles = StyleSheet.create({
     bottom: -5,
   },
   dotContainer: {
-    // position: 'absolute',
-    // bottom: 15,
     height: 10,
     display: 'flex',
     flexDirection: 'row',
@@ -128,7 +126,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     margin: 5,
     marginTop: 20,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
     zIndex: 1000,
   },
 });

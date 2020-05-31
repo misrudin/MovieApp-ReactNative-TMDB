@@ -16,13 +16,15 @@ import {
   getVideo,
   getDetail,
   getCast,
+  searchMovie,
 } from '../../public/redux/actions/movies';
 
-const MovieList = ({data, onPress, nav}) => {
+const MovieList = ({data, onPress, nav, keyword}) => {
   const [page, setPage] = useState(2);
   let [results, setResults] = useState(data.results);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const [show, setShow] = useState(true);
   const dispatch = useDispatch();
   const {tipe} = useSelector((state) => state.movies);
 
@@ -34,15 +36,28 @@ const MovieList = ({data, onPress, nav}) => {
   };
 
   const loadMore = async () => {
-    if (page < data.total_pages) {
-      setLoading(true);
-      await dispatch(getMoviesPopular(page, tipe)).then((res) => {
-        setTimeout(() => {
-          setResults([...results, ...res.value.data.results]);
-          setPage(page + 1);
-          setLoading(false);
-        }, 500);
-      });
+    if (!keyword) {
+      if (page < data.total_pages) {
+        setLoading(true);
+        await dispatch(getMoviesPopular(page, tipe)).then((res) => {
+          setTimeout(() => {
+            setResults([...results, ...res.value.data.results]);
+            setPage(page + 1);
+            setLoading(false);
+          }, 500);
+        });
+      }
+    } else {
+      if (page < data.total_pages) {
+        setLoading(true);
+        await dispatch(searchMovie(keyword, page)).then((res) => {
+          setTimeout(() => {
+            setResults([...results, ...res.value.data.results]);
+            setPage(page + 1);
+            setLoading(false);
+          }, 500);
+        });
+      }
     }
   };
 
@@ -60,28 +75,30 @@ const MovieList = ({data, onPress, nav}) => {
 
   return (
     <>
-      <View style={styles.wrapper}>
-        <TouchableOpacity
-          onPress={() => getMovie('popular')}
-          style={styles.button}>
-          <Text style={styles.text}>Popular</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => getMovie('now_playing')}
-          style={styles.button}>
-          <Text style={styles.text}>Now Playing</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => getMovie('upcoming')}
-          style={styles.button}>
-          <Text style={styles.text}>Upcoming</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => getMovie('top_rated')}
-          style={styles.button}>
-          <Text style={styles.text}>Top Rated</Text>
-        </TouchableOpacity>
-      </View>
+      {keyword ? null : !show ? null : (
+        <View style={styles.wrapper}>
+          <TouchableOpacity
+            onPress={() => getMovie('popular')}
+            style={styles.button}>
+            <Text style={styles.text}>Popular</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => getMovie('now_playing')}
+            style={styles.button}>
+            <Text style={styles.text}>Now Playing</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => getMovie('upcoming')}
+            style={styles.button}>
+            <Text style={styles.text}>Upcoming</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => getMovie('top_rated')}
+            style={styles.button}>
+            <Text style={styles.text}>Top Rated</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       <View style={styles.container}>
         {data ? (
           <FlatList
@@ -89,6 +106,8 @@ const MovieList = ({data, onPress, nav}) => {
             onEndReached={() => {
               loadMore();
             }}
+            // onScrollBeginDrag={(e) => setShow(false)}
+            // onScrollEndDrag={(e) => setShow(true)}
             data={results}
             renderItem={({item}) => (
               <List data={item} onPress={(id) => openDetail(id)} />

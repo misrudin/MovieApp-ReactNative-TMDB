@@ -1,54 +1,45 @@
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Card, Badge, Text} from 'react-native-paper';
+import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
+import {Card, Badge} from 'react-native-paper';
 
 const List = ({data, onPress}) => {
   return (
     <View style={styles.cardView}>
-      <TouchableOpacity
-        style={{height: '90%'}}
-        onPress={() => onPress(data.id)}>
+      <TouchableOpacity style={styles.height} onPress={() => onPress(data.id)}>
         <Card>
-          <Card.Cover
-            source={{
-              uri: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
-            }}
-            style={{
-              borderRadius: 5,
-              height: '100%',
-            }}
-          />
+          {data.poster_path ? (
+            <Card.Cover
+              source={{
+                uri: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
+              }}
+              style={styles.cardCover}
+            />
+          ) : (
+            <View
+              style={[
+                styles.cardCover,
+                {justifyContent: 'center', alignItems: 'center'},
+              ]}>
+              <Text style={{color: '#acacac', fontWeight: 'bold'}}>
+                No Image
+              </Text>
+            </View>
+          )}
           <Card.Title
-            style={{
-              position: 'absolute',
-              bottom: -20,
-              left: 0,
-            }}
+            style={styles.cardTitle}
             right={(props) => (
-              <Badge
-                {...props}
-                size={22}
-                style={{
-                  marginRight: 10,
-                  fontWeight: 'bold',
-                }}>
+              <Badge {...props} size={22} style={styles.badge}>
                 {data.vote_average}
               </Badge>
             )}
           />
         </Card>
-        <Badge
-          size={25}
-          style={{
-            fontWeight: 'bold',
-            backgroundColor: 'transparent',
-            width: '100%',
-          }}>
+        <Badge size={25} style={styles.badgeTop}>
           {data.name}
         </Badge>
-        <Text style={{color: '#acacac', fontSize: 12, textAlign: 'center'}}>
+        <Badge size={25} style={styles.badgeBotom}>
           {data.first_air_date}
-        </Text>
+        </Badge>
       </TouchableOpacity>
     </View>
   );
@@ -63,5 +54,31 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     margin: 8,
+  },
+  badgeBotom: {
+    fontWeight: 'normal',
+    backgroundColor: 'transparent',
+    width: '100%',
+    marginTop: -10,
+    color: '#acacac',
+  },
+  badgeTop: {
+    fontWeight: 'bold',
+    backgroundColor: 'transparent',
+    width: '100%',
+  },
+  cardCover: {
+    borderRadius: 5,
+    height: '100%',
+  },
+  cardTitle: {
+    position: 'absolute',
+    bottom: -20,
+    left: 0,
+  },
+  height: {height: '90%'},
+  badge: {
+    marginRight: 10,
+    fontWeight: 'bold',
   },
 });
