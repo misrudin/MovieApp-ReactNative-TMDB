@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {createStackNavigator} from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {useWindowDimensions} from 'react-native';
 import {Colors} from '../../config/Colors';
@@ -48,8 +48,8 @@ const Navigators = () => {
           component={Home}
           options={{
             drawerLabel: 'Home',
-            drawerIcon: ({color, size}) => (
-              <Icon name="home" size={size} color={color} />
+            drawerIcon: ({color}) => (
+              <Icon name="home" size={25} color={color} />
             ),
           }}
         />
@@ -58,8 +58,8 @@ const Navigators = () => {
           component={Movie}
           options={{
             drawerLabel: 'Movies',
-            drawerIcon: ({color, size}) => (
-              <Icon name="movie" size={size} color={color} />
+            drawerIcon: ({color}) => (
+              <Icon name="film" size={25} color={color} />
             ),
           }}
         />
@@ -68,9 +68,7 @@ const Navigators = () => {
           component={TvShows}
           options={{
             drawerLabel: 'Tv Shows',
-            drawerIcon: ({color, size}) => (
-              <Icon name="settings" size={size} color={color} />
-            ),
+            drawerIcon: ({color}) => <Icon name="tv" size={22} color={color} />,
           }}
         />
         <Drawer.Screen
@@ -78,8 +76,8 @@ const Navigators = () => {
           component={People}
           options={{
             drawerLabel: 'Peoples',
-            drawerIcon: ({color, size}) => (
-              <Icon name="label" size={size} color={color} />
+            drawerIcon: ({color}) => (
+              <Icon name="users" size={25} color={color} />
             ),
           }}
         />

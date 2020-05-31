@@ -39,3 +39,10 @@ export const searchTv = (keyword, page) => {
     ),
   };
 };
+
+export const setTipe = (tipe) => {
+  return {
+    type: 'SET_TIPE_TV',
+    payload: tipe,
+  };
+};

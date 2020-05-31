@@ -45,7 +45,7 @@ const People = ({navigation}) => {
           <Text style={styles.text}>Error, Plaese try again</Text>
         ) : dataPeople.total_results < 1 ? (
           <Text style={styles.text}>
-            Nothing result found with keyword : {key}
+            No results found with keywords : {key}
           </Text>
         ) : (
           <PeopleList

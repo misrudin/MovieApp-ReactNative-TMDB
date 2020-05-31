@@ -1,10 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Text, ActivityIndicator} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import {Colors} from '../../config/Colors';
 import Header from '../../components/Header';
 import TvList from '../../components/TvList';
 import {useDispatch, useSelector} from 'react-redux';
-import {getDataTv, searchTv} from '../../public/redux/actions/tvshow';
+import {getDataTv, searchTv, setTipe} from '../../public/redux/actions/tvshow';
+import {Badge} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const TvShow = ({navigation}) => {
   const dispatch = useDispatch();
@@ -14,15 +23,15 @@ const TvShow = ({navigation}) => {
   const [key, setKey] = useState('');
 
   useEffect(() => {
-    const getDataMovies = async () => {
+    const getDataTvShows = async () => {
       setLoading(true);
       await dispatch(getDataTv(1, 'popular')).then(() => setLoading(false));
     };
 
-    getDataMovies();
+    getDataTvShows();
   }, [dispatch]);
 
-  const getMovies = async (type) => {
+  const getTv = async (type) => {
     setLoading(true);
     await dispatch(getDataTv(1, type)).then(() => setLoading(false));
   };
@@ -37,7 +46,8 @@ const TvShow = ({navigation}) => {
       setLoading(true);
       await dispatch(searchTv(keyword, 1)).then(() => setLoading(false));
     } else {
-      getMovies('popular');
+      getTv('popular');
+      dispatch(setTipe('popular'));
     }
   };
 
@@ -49,12 +59,12 @@ const TvShow = ({navigation}) => {
           <Text style={styles.text}>Error, Plaese try again</Text>
         ) : datatv.total_results < 1 ? (
           <Text style={styles.text}>
-            Nothing result found with keyword : {key}
+            No results found with keywords : {key}
           </Text>
         ) : (
           <TvList
             data={datatv}
-            onPress={(type) => getMovies(type)}
+            onPress={(type) => getTv(type)}
             nav={(lokasi) => navigation.navigate(lokasi)}
             keyword={key}
           />
@@ -63,6 +73,15 @@ const TvShow = ({navigation}) => {
           <ActivityIndicator size="large" style={styles.loading} color="#fff" />
         ) : null}
       </View>
+      <TouchableOpacity
+        style={styles.badgeBotom}
+        onPress={() =>
+          Linking.openURL('https://www.themoviedb.org/tv/new?language=en-US')
+        }>
+        <Badge size={45}>
+          <Icon name="plus" size={20} color={Colors.white} />
+        </Badge>
+      </TouchableOpacity>
     </>
   );
 };
@@ -91,5 +110,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 20,
+  },
+  badgeBotom: {
+    position: 'absolute',
+    right: 20,
+    bottom: 30,
   },
 });

@@ -27,7 +27,7 @@ const List = ({data, onPress}) => {
           )}
           <Card.Title
             style={styles.cardTitle}
-            right={(props) => (
+            left={(props) => (
               <Badge {...props} size={22} style={styles.badge}>
                 {data.vote_average}
               </Badge>
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     position: 'absolute',
     bottom: -20,
-    left: 0,
+    left: -20,
   },
   height: {height: '90%'},
   badge: {

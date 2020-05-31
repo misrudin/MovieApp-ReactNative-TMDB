@@ -1,10 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Text, ActivityIndicator} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import {Colors} from '../../config/Colors';
 import Header from '../../components/Header';
 import MovieList from '../../components/MovieList';
 import {useDispatch, useSelector} from 'react-redux';
-import {getMoviesPopular, searchMovie} from '../../public/redux/actions/movies';
+import {
+  getMoviesPopular,
+  searchMovie,
+  setTipe,
+} from '../../public/redux/actions/movies';
+import {Badge} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Movie = ({navigation}) => {
   const dispatch = useDispatch();
@@ -40,6 +53,7 @@ const Movie = ({navigation}) => {
       await dispatch(searchMovie(keyword, 1)).then(() => setLoading(false));
     } else {
       getMovies('popular');
+      dispatch(setTipe('popular'));
     }
   };
 
@@ -51,7 +65,7 @@ const Movie = ({navigation}) => {
           <Text style={styles.text}>Error, Plaese try again</Text>
         ) : popular.total_results < 1 ? (
           <Text style={styles.text}>
-            Nothing result found with keyword : {key}
+            No results found with keywords : {key}
           </Text>
         ) : (
           <MovieList
@@ -65,6 +79,15 @@ const Movie = ({navigation}) => {
           <ActivityIndicator size="large" style={styles.loading} color="#fff" />
         ) : null}
       </View>
+      <TouchableOpacity
+        style={styles.badgeBotom}
+        onPress={() =>
+          Linking.openURL('https://www.themoviedb.org/movie/new?language=en-US')
+        }>
+        <Badge size={45}>
+          <Icon name="plus" size={20} color={Colors.white} />
+        </Badge>
+      </TouchableOpacity>
     </>
   );
 };
@@ -93,5 +116,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 20,
+  },
+  badgeBotom: {
+    position: 'absolute',
+    right: 20,
+    bottom: 30,
   },
 });

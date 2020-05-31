@@ -10,13 +10,13 @@ import {
 import {Colors} from '../../config/Colors';
 import List from './List';
 import {useDispatch, useSelector} from 'react-redux';
-import {setTipe} from '../../public/redux/actions/movies';
 import {
   getDataTv,
   getVideo,
   getDetail,
   getCast,
   searchTv,
+  setTipe,
 } from '../../public/redux/actions/tvshow';
 
 const TvList = ({data, onPress, nav, keyword}) => {
@@ -24,7 +24,7 @@ const TvList = ({data, onPress, nav, keyword}) => {
   let [results, setResults] = useState(data.results);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const {tipe} = useSelector((state) => state.movies);
+  const {tipe} = useSelector((state) => state.tvshow);
   const [loading2, setLoading2] = useState(false);
 
   const getMovie = (e) => {
@@ -76,22 +76,24 @@ const TvList = ({data, onPress, nav, keyword}) => {
         <View style={styles.wrapper}>
           <TouchableOpacity
             onPress={() => getMovie('popular')}
-            style={styles.button}>
+            style={tipe === 'popular' ? styles.buttonActive : styles.button}>
             <Text style={styles.text}>Popular</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => getMovie('airing_today')}
-            style={styles.button}>
+            style={
+              tipe === 'airing_today' ? styles.buttonActive : styles.button
+            }>
             <Text style={styles.text}>Airing Today</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => getMovie('on_the_air')}
-            style={styles.button}>
+            style={tipe === 'on_the_air' ? styles.buttonActive : styles.button}>
             <Text style={styles.text}>On Tv</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => getMovie('top_rated')}
-            style={styles.button}>
+            style={tipe === 'top_rated' ? styles.buttonActive : styles.button}>
             <Text style={styles.text}>Top Rated</Text>
           </TouchableOpacity>
         </View>
@@ -144,5 +146,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     zIndex: 10,
+  },
+  buttonActive: {
+    backgroundColor: 'royalblue',
+    padding: 10,
+    borderRadius: 4,
+    marginHorizontal: 5,
   },
 });

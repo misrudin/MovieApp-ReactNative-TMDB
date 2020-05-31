@@ -7,6 +7,7 @@ const initialValue = {
   tvvideo: [],
   tvdetail: [],
   tvcast: [],
+  tipe: 'popular',
 };
 
 const tvshowReducer = (state = initialValue, action) => {
@@ -94,6 +95,14 @@ const tvshowReducer = (state = initialValue, action) => {
         isPending: false,
         isFulfilled: true,
         tvcast: action.payload.data,
+      };
+
+    case 'SET_TIPE_TV':
+      return {
+        ...state,
+        isPending: false,
+        isFulfilled: true,
+        tipe: action.payload,
       };
 
     default:

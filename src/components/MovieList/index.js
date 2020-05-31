@@ -79,22 +79,24 @@ const MovieList = ({data, onPress, nav, keyword}) => {
         <View style={styles.wrapper}>
           <TouchableOpacity
             onPress={() => getMovie('popular')}
-            style={styles.button}>
+            style={tipe === 'popular' ? styles.buttonActive : styles.button}>
             <Text style={styles.text}>Popular</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => getMovie('now_playing')}
-            style={styles.button}>
+            style={
+              tipe === 'now_playing' ? styles.buttonActive : styles.button
+            }>
             <Text style={styles.text}>Now Playing</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => getMovie('upcoming')}
-            style={styles.button}>
+            style={tipe === 'upcoming' ? styles.buttonActive : styles.button}>
             <Text style={styles.text}>Upcoming</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => getMovie('top_rated')}
-            style={styles.button}>
+            style={tipe === 'top_rated' ? styles.buttonActive : styles.button}>
             <Text style={styles.text}>Top Rated</Text>
           </TouchableOpacity>
         </View>
@@ -139,6 +141,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginHorizontal: 5,
   },
+  buttonActive: {
+    backgroundColor: 'royalblue',
+    padding: 10,
+    borderRadius: 4,
+    marginHorizontal: 5,
+  },
+
   text: {
     color: Colors.white,
   },

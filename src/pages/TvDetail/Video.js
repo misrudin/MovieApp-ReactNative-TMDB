@@ -15,7 +15,7 @@ const TvVideo = () => {
           style={styles.button}
           onPress={() =>
             YouTubeStandaloneAndroid.playVideo({
-              apiKey: 'AIzaSyDnbcf6FHKOYMWzcJmSPhqAEtNq2CzZbOE',
+              apiKey: 'AIzaSyCmphgsomm9eCR83IetfAoZtXodM4iTunM',
               videoId: tvvideo.results[0].key,
               autoplay: true,
               lightboxMode: true,
